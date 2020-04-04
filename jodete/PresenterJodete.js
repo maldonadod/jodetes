@@ -7,6 +7,8 @@ class PresenterJodete {
   }
   mostrarDescarte(jugador, carta) {
   }
+  penalizarDescarteInvalido(jugador, carta) {
+  }
 }
 
 module.exports = PresenterJodete;

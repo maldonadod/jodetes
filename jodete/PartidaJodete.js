@@ -27,18 +27,28 @@ class PartidaJodete {
       siguienteCartaEnLaBaraja(),
       siguienteCartaEnLaBaraja(),
     ]
-    this.presenter.mostrarCartaInicial(siguienteCartaEnLaBaraja())
+    this.cartasJugadas.push(siguienteCartaEnLaBaraja())
+    this.presenter.mostrarCartaInicial(this.cartasJugadas[this.cartasJugadas.length - 1])
     this.presenter.mostrarMano(jugadorUno, this.manos[jugadorUno])
     this.presenter.mostrarMano(jugadorDos, this.manos[jugadorDos])
     this.presenter.esperarPorJugada(jugadorUno, this)
   }
-  bajarCarta(jugador, carta) {
-    this.presenter.mostrarDescarte(jugador, carta)
+  bajarCarta(jugador, cartaADescartar) {
+
+    let manoDelJugador = this.manos[jugador]
+    const ultimaCartaJugada = this.cartasJugadas[this.cartasJugadas.length - 1]
+    const esDescarteValido = validarDescarte(cartaADescartar, ultimaCartaJugada)
+
+    if (esDescarteValido) {
+      this.presenter.mostrarDescarte(jugador, cartaADescartar)
+      manoDelJugador = descartarCarta(manoDelJugador, cartaADescartar)
+    } else {
+      this.presenter.penalizarDescarteInvalido(jugador, cartaADescartar)
+      manoDelJugador = tomarCarta(manoDelJugador, this.baraja)
+    }
+
+    this.presenter.mostrarMano(jugador, manoDelJugador)
     
-    this.manos[jugador] = descartarCarta(this.manos[jugador], carta)
-
-    this.presenter.mostrarMano(jugador, this.manos[jugador])
-
     const siguienteJugador = jugador === this.jugadorUno
       ? this.jugadorDos
       : this.jugadorUno
@@ -49,6 +59,14 @@ class PartidaJodete {
 
 function descartarCarta(mano, carta) {
   return mano.filter(cartaEnMano => cartaEnMano !== carta)
+}
+function tomarCarta(mano, baraja) {
+  return [...mano, baraja.robarUnaCarta()]
+}
+function validarDescarte(cartaADescartar, ultimaCartaJugada) {
+  const [palo1, numero1] = cartaADescartar.split(".")
+  const [palo2, numero2] = ultimaCartaJugada.split(".")
+  return palo1 === palo2 || numero1 === numero2
 }
 
 module.exports = PartidaJodete;

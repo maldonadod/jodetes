@@ -23,6 +23,9 @@ class PresenterJodete {
       partida.bajarCarta(jugador, carta)
     })
   }
+  penalizarDescarteInvalido(jugador, carta) {
+    console.log(jugador + " descartó invalidamente: ", carta, " debe levantar una carta...")
+  }
 }
 
 module.exports = PresenterJodete;
