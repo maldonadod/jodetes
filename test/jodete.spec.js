@@ -62,10 +62,33 @@ describe("una vez que el jugador descarta", () => {
   })
 })
 
+describe("cuando el jugador intenta descargar una carta invalida", () => {
+  it("debe retomar la carta y levantar una nueva", () => {
+    const presenter = new PresenterJodete()
+    const partida = new PartidaJodete(presenter)
+    
+    const JUGADOR_UNO = "pepe"
+    const JUGADOR_DOS = "juan"
+    
+    const mostrarCartaInicial = dadaLaInteraccion(presenter, "mostrarCartaInicial")
+    
+    partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
+    
+    const penalizarDescarteInvalido = dadaLaInteraccion(presenter, "penalizarDescarteInvalido")
+    const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
+    const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
+    
+    partida.bajarCarta(JUGADOR_UNO, "oro.2")
+    
+    mostrarCartaInicial.primero("espada.1")
+    penalizarDescarteInvalido.primero(JUGADOR_UNO, "oro.2")
+    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"])
+    esperarPorJugada.primero(JUGADOR_DOS, partida)
+  })
+})
+
 function dadaLaInteraccion(object, message) {
-  const stub = sinon
-    .stub(object, message)
-    .callsFake(() => {})
+  const stub = sinon.spy(object, message)
   return {
     primero(...args) {
       const message = stub.printf(`expect %n to be called with ${args.join(", ")} but called %c`)
@@ -74,6 +97,9 @@ function dadaLaInteraccion(object, message) {
     segundo(...args) {
       const message = stub.printf(`expect %n to be called with ${args.join(", ")} but called %c`)
       expect(stub.args[1], message).to.eqls(args)
+    },
+    printLlamadas() {
+      console.log(JSON.stringify(stub.args))
     }
   }
 }
