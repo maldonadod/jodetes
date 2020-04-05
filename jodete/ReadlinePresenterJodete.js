@@ -20,7 +20,11 @@ class PresenterJodete {
   }
   esperarPorJugada(jugador, partida) {
     this.rl.question(jugador + " juega: ", carta => {
-      partida.bajarCarta(jugador, carta)
+      if (carta === "tomar") {
+        partida.tomarCarta(jugador)
+      } else {
+        partida.bajarCarta(jugador, carta)
+      }
     })
   }
   penalizarDescarteInvalido(jugador, carta) {

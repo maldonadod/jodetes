@@ -1,39 +1,39 @@
 const PartidaJodete = require("../jodete/PartidaJodete");
 const PresenterJodete = require("../jodete/PresenterJodete");
+const Baraja = require("../jodete/Baraja");
 const expect = require("chai").expect;
 const sinon = require("sinon");
+
+const JUGADOR_UNO = "pepe"
+const JUGADOR_DOS = "juan"
+
+function iniciar(presenter) {
+  const partida = new PartidaJodete(presenter, new Baraja())
+  partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
+  return partida
+}
 
 describe("al inciar la partida", () => {
 
   it("cada jugador reciben 5 cartas y revelamos una carta en la mesa", () => {
     const presenter = new PresenterJodete()
-    const partida = new PartidaJodete(presenter)
-
     const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
     const mostrarCartaInicial = dadaLaInteraccion(presenter, "mostrarCartaInicial")
     const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
-
-    const JUGADOR_UNO = "pepe"
-    const JUGADOR_DOS = "juan"
-
-    partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
     
-    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5"])
+    const partida = iniciar(presenter)
+    
     mostrarCartaInicial.primero("espada.1")
+    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5"])
     mostrarMano.segundo(JUGADOR_DOS, ["copa.1", "copa.2", "copa.3", "copa.4", "copa.5"])
     esperarPorJugada.primero(JUGADOR_UNO, partida)
   })
 })
 
-describe("cuando el jugador baja carta valida", () => {
+describe("cuando el jugador descarta carta valida", () => {
   it("su mano pierde la carta y esta se convierte en la ultima carta jugada", () => {
     const presenter = new PresenterJodete()
-    const partida = new PartidaJodete(presenter)
-    
-    const JUGADOR_UNO = "pepe"
-    const JUGADOR_DOS = "juan"
-    partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
-    
+    const partida = iniciar(presenter)
     const mostrarDescarte = dadaLaInteraccion(presenter, "mostrarDescarte")
     const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
 
@@ -47,43 +47,43 @@ describe("cuando el jugador baja carta valida", () => {
 describe("una vez que el jugador descarta", () => {
   it("debe esperar por el turno del oponente", () => {
     const presenter = new PresenterJodete()
-    const partida = new PartidaJodete(presenter)
-    
-    const JUGADOR_UNO = "pepe"
-    const JUGADOR_DOS = "juan"
-    partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
-    partida.bajarCarta(JUGADOR_UNO, "oro.1")
-    
+    const partida = iniciar(presenter)
     const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
     
+    partida.bajarCarta(JUGADOR_UNO, "oro.1")
     partida.bajarCarta(JUGADOR_DOS, "copa.1")
 
-    esperarPorJugada.primero(JUGADOR_UNO, partida)
+    esperarPorJugada.segundo(JUGADOR_UNO, partida)
   })
 })
 
 describe("cuando el jugador intenta descartar una carta invalida", () => {
   it("debe retomar la carta y levantar una nueva", () => {
     const presenter = new PresenterJodete()
-    const partida = new PartidaJodete(presenter)
-    
-    const JUGADOR_UNO = "pepe"
-    const JUGADOR_DOS = "juan"
-    
-    const mostrarCartaInicial = dadaLaInteraccion(presenter, "mostrarCartaInicial")
-    
-    partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
-    
+    const partida = iniciar(presenter)
     const penalizarDescarteInvalido = dadaLaInteraccion(presenter, "penalizarDescarteInvalido")
     const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
     const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
     
     partida.bajarCarta(JUGADOR_UNO, "oro.2")
     
-    mostrarCartaInicial.primero("espada.1")
     penalizarDescarteInvalido.primero(JUGADOR_UNO, "oro.2")
     mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"])
     esperarPorJugada.primero(JUGADOR_DOS, partida)
+  })
+})
+
+describe("durante el turno de cada jugador", () => {
+  it("puede tomar una carta", () => {
+    const presenter = new PresenterJodete()
+    const partida = iniciar(presenter)
+    const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
+    const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
+
+    partida.tomarCarta(JUGADOR_UNO)
+    
+    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"])
+    esperarPorJugada.primero(JUGADOR_UNO, partida)
   })
 })
 
