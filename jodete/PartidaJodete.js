@@ -1,9 +1,9 @@
-const Baraja = require("./Baraja.js")
+const Baraja = require("./Baraja")
+const CartasEnJuego = require("./CartasEnJuego")
 
 class PartidaJodete {
   constructor(presenter) {
     this.presenter = presenter
-    this.cartasJugadas = []
     this.manos = {}
     this.baraja = new Baraja()
   }
@@ -27,8 +27,8 @@ class PartidaJodete {
       siguienteCartaEnLaBaraja(),
       siguienteCartaEnLaBaraja(),
     ]
-    this.cartasJugadas.push(siguienteCartaEnLaBaraja())
-    this.presenter.mostrarCartaInicial(this.cartasJugadas[this.cartasJugadas.length - 1])
+    this.cartasJugadas = new CartasEnJuego(siguienteCartaEnLaBaraja())
+    this.presenter.mostrarCartaInicial(this.cartasJugadas.ultima())
     this.presenter.mostrarMano(jugadorUno, this.manos[jugadorUno])
     this.presenter.mostrarMano(jugadorDos, this.manos[jugadorDos])
     this.presenter.esperarPorJugada(jugadorUno, this)
@@ -36,11 +36,12 @@ class PartidaJodete {
   bajarCarta(jugador, cartaADescartar) {
 
     let manoDelJugador = this.manos[jugador]
-    const ultimaCartaJugada = this.cartasJugadas[this.cartasJugadas.length - 1]
+    const ultimaCartaJugada = this.cartasJugadas.ultima()
     const esDescarteValido = validarDescarte(cartaADescartar, ultimaCartaJugada)
 
     if (esDescarteValido) {
-      this.presenter.mostrarDescarte(jugador, cartaADescartar)
+      this.cartasJugadas.apilar(cartaADescartar)
+      this.presenter.mostrarDescarte(jugador, this.cartasJugadas.ultima())
       manoDelJugador = descartarCarta(manoDelJugador, cartaADescartar)
     } else {
       this.presenter.penalizarDescarteInvalido(jugador, cartaADescartar)
