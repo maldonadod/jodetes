@@ -62,7 +62,7 @@ describe("una vez que el jugador descarta", () => {
   })
 })
 
-describe("cuando el jugador intenta descargar una carta invalida", () => {
+describe("cuando el jugador intenta descartar una carta invalida", () => {
   it("debe retomar la carta y levantar una nueva", () => {
     const presenter = new PresenterJodete()
     const partida = new PartidaJodete(presenter)
