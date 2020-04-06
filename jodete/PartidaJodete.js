@@ -40,16 +40,14 @@ class PartidaJodete {
     const esDescarteValido = validarDescarte(cartaADescartar, ultimaCartaJugada)
 
     if (esDescarteValido) {
-      this.cartasJugadas.apilar(cartaADescartar)
-      this.presenter.mostrarDescarte(jugador, this.cartasJugadas.ultima())
       this.manos[jugador] = descartarCarta(manoDelJugador, cartaADescartar)
+      this.cartasJugadas.apilar(cartaADescartar)
+      this.presenter.mostrarDescarte(jugador, this.manos[jugador], this.cartasJugadas.ultima())
     } else {
-      this.presenter.penalizarDescarteInvalido(jugador, cartaADescartar)
       this.manos[jugador] = tomarCarta(manoDelJugador, this.baraja)
+      this.presenter.mostrarDescarteInvalido(jugador, this.manos[jugador], cartaADescartar)
     }
 
-    this.presenter.mostrarMano(jugador, this.manos[jugador])
-    
     const siguienteJugador = jugador === this.jugadorUno
       ? this.jugadorDos
       : this.jugadorUno
@@ -57,9 +55,9 @@ class PartidaJodete {
     this.presenter.esperarPorJugada(siguienteJugador, this)
   }
   tomarCarta(jugador) {
-    let manoDelJugador = this.manos[jugador]
-    manoDelJugador = tomarCarta(manoDelJugador, this.baraja)
-    this.presenter.mostrarMano(jugador, manoDelJugador)
+    this.manos[jugador] = tomarCarta(this.manos[jugador], this.baraja)
+    
+    this.presenter.mostrarMano(jugador, this.manos[jugador])
 
     this.presenter.esperarPorJugada(jugador, this)
   }

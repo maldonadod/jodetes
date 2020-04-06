@@ -8,18 +8,24 @@ class PresenterJodete {
       output: process.stdout
     })
     console.clear()
+
+    this.manos = {}
   }
   mostrarMano(jugador, mano) {
-    console.log(`la mano de ${jugador} contiene: ${mano.join(", ")}`)
+    this.manos[jugador] = mano
+    console.log(`la mano de ${jugador} contiene ${mano.length} cartas.`)
   }
   mostrarCartaInicial(carta) {
-    console.log("Iniciamos la partida con la carta: ", carta)
+    console.log("Iniciamos la partida con la carta:", carta)
   }
-  mostrarDescarte(jugador, carta) {
+  mostrarDescarte(jugador, mano, carta) {
+    this.manos[jugador] = mano
     console.log(jugador + " descartó: ", carta)
   }
   esperarPorJugada(jugador, partida) {
-    this.rl.question(jugador + " juega: ", carta => {
+    const cantidadDeCartasEnLaMano = this.manos[jugador].length
+    const jugadasDisponibles = [...this.manos[jugador], "tomar"].join(", ")
+    this.rl.question(jugador + " juega " + jugadasDisponibles + ` (${cantidadDeCartasEnLaMano}):`, carta => {
       if (carta === "tomar") {
         partida.tomarCarta(jugador)
       } else {
@@ -27,7 +33,8 @@ class PresenterJodete {
       }
     })
   }
-  penalizarDescarteInvalido(jugador, carta) {
+  mostrarDescarteInvalido(jugador, mano, carta) {
+    this.manos[jugador] = mano
     console.log(jugador + " descartó invalidamente: ", carta, " debe levantar una carta...")
   }
 }

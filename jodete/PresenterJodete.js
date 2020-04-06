@@ -5,9 +5,9 @@ class PresenterJodete {
   }
   esperarPorJugada(jugador) {
   }
-  mostrarDescarte(jugador, carta) {
+  mostrarDescarte(jugador, mano, carta) {
   }
-  penalizarDescarteInvalido(jugador, carta) {
+  mostrarDescarteInvalido(jugador, mano, carta) {
   }
 }
 

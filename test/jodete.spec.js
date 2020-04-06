@@ -35,12 +35,10 @@ describe("cuando el jugador descarta carta valida", () => {
     const presenter = new PresenterJodete()
     const partida = iniciar(presenter)
     const mostrarDescarte = dadaLaInteraccion(presenter, "mostrarDescarte")
-    const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
 
     partida.bajarCarta(JUGADOR_UNO, "oro.1")
 
-    mostrarDescarte.primero(JUGADOR_UNO, "oro.1")
-    mostrarMano.primero(JUGADOR_UNO, ["oro.2", "oro.3", "oro.4", "oro.5"])
+    mostrarDescarte.primero(JUGADOR_UNO, ["oro.2", "oro.3", "oro.4", "oro.5"], "oro.1")
   })
 })
 
@@ -61,14 +59,12 @@ describe("cuando el jugador intenta descartar una carta invalida", () => {
   it("debe retomar la carta y levantar una nueva", () => {
     const presenter = new PresenterJodete()
     const partida = iniciar(presenter)
-    const penalizarDescarteInvalido = dadaLaInteraccion(presenter, "penalizarDescarteInvalido")
-    const mostrarMano = dadaLaInteraccion(presenter, "mostrarMano")
+    const mostrarDescarteInvalido = dadaLaInteraccion(presenter, "mostrarDescarteInvalido")
     const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
     
     partida.bajarCarta(JUGADOR_UNO, "oro.2")
     
-    penalizarDescarteInvalido.primero(JUGADOR_UNO, "oro.2")
-    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"])
+    mostrarDescarteInvalido.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"], "oro.2")
     esperarPorJugada.primero(JUGADOR_DOS, partida)
   })
 })
