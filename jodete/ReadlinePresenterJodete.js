@@ -8,23 +8,16 @@ class PresenterJodete {
       output: process.stdout
     })
     console.clear()
-
-    this.manos = {}
-  }
-  mostrarMano(jugador, mano) {
-    this.manos[jugador] = mano
   }
   mostrarCartaInicial(carta) {
     console.log("Iniciamos la partida con la carta:", carta)
   }
   mostrarDescarte(jugador, mano, carta) {
-    this.manos[jugador] = mano
     console.log(jugador + " descartó: ", carta)
   }
-  esperarPorJugada(jugador, partida) {
-    const cantidadDeCartasEnLaMano = this.manos[jugador].length
-    const jugadasDisponibles = this.manos[jugador].join(", ")
-    this.rl.question(jugador + " juega " + jugadasDisponibles + ` (${cantidadDeCartasEnLaMano}):`, carta => {
+  esperarPorJugada(jugador, jugadas, partida) {
+    const jugadasDisponibles = jugadas.join(", ")
+    this.rl.question(`${jugador}: ${jugadasDisponibles} >> `, carta => {
       if (carta === "tomar") {
         partida.tomarCarta(jugador)
       } else if (carta === "pasar") {

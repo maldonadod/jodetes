@@ -29,9 +29,7 @@ class PartidaJodete {
     ]
     this.cartasJugadas = new CartasEnJuego(siguienteCartaEnLaBaraja())
     this.presenter.mostrarCartaInicial(this.cartasJugadas.ultima())
-    this.presenter.mostrarMano(jugadorUno, [...this.manos[jugadorUno], "tomar"])
-    this.presenter.mostrarMano(jugadorDos, [...this.manos[jugadorDos], "tomar"])
-    this.presenter.esperarPorJugada(jugadorUno, this)
+    this.presenter.esperarPorJugada(jugadorUno, [...this.manos[jugadorUno], "tomar"], this)
   }
   bajarCarta(jugador, cartaADescartar) {
 
@@ -52,20 +50,18 @@ class PartidaJodete {
       ? this.jugadorDos
       : this.jugadorUno
 
-    this.presenter.esperarPorJugada(siguienteJugador, this)
+    this.presenter.esperarPorJugada(siguienteJugador, [...this.manos[siguienteJugador], "tomar"], this)
   }
   tomarCarta(jugador) {
     this.manos[jugador] = tomarCarta(this.manos[jugador], this.baraja)
-    
-    this.presenter.mostrarMano(jugador, [...this.manos[jugador], "pasar"])
 
-    this.presenter.esperarPorJugada(jugador, this)
+    this.presenter.esperarPorJugada(jugador, [...this.manos[jugador], "pasar"], this)
   }
   pasarTurno(jugador) {
     const siguienteJugador = jugador === this.jugadorUno
       ? this.jugadorDos
       : this.jugadorUno
-    this.presenter.esperarPorJugada(siguienteJugador, this)
+    this.presenter.esperarPorJugada(siguienteJugador, [...this.manos[siguienteJugador], "tomar"], this)
   }
 }
 

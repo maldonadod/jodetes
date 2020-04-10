@@ -1,9 +1,7 @@
 class PresenterJodete {
-  mostrarMano(jugador, mano) {
-  }
   mostrarCartaInicial(carta) {
   }
-  esperarPorJugada(jugador) {
+  esperarPorJugada(jugador, jugadas, partida) {
   }
   mostrarDescarte(jugador, mano, carta) {
   }
