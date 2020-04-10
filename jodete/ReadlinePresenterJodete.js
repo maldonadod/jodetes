@@ -24,10 +24,12 @@ class PresenterJodete {
   }
   esperarPorJugada(jugador, partida) {
     const cantidadDeCartasEnLaMano = this.manos[jugador].length
-    const jugadasDisponibles = [...this.manos[jugador], "tomar"].join(", ")
+    const jugadasDisponibles = this.manos[jugador].join(", ")
     this.rl.question(jugador + " juega " + jugadasDisponibles + ` (${cantidadDeCartasEnLaMano}):`, carta => {
       if (carta === "tomar") {
         partida.tomarCarta(jugador)
+      } else if (carta === "pasar") {
+        partida.pasarTurno(jugador)
       } else {
         partida.bajarCarta(jugador, carta)
       }
