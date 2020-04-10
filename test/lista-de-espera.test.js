@@ -9,19 +9,17 @@
 // lista.inscribi("pepe")
 
 const expect = require("chai").expect;
+const crearLista = require("../lista/crearLista")
 
-it("quiero saber las plazas disponibles", function() {
+it.only("quiero saber las plazas disponibles", function() {
 
+  //arrange
   const limite = 250
+  const lista = crearLista(limite)
 
-  const lista = {
-    obtenerPlazasDisponibles() {
-      const personasConfirmadas = 0
-      return limite - personasConfirmadas
-    }
-  }
-
+  //act, exercise
   const plazasDisponibles = lista.obtenerPlazasDisponibles();
 
-  expect(plazasDisponibles).to.eqls(250);
+  //assert
+  expect(plazasDisponibles).to.equal(250);
 })
