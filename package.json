@@ -7,7 +7,7 @@
     "start": "node ./jodete/index.js",
     "test": "mocha",
     "test:coverage:text": "npx nyc@latest --reporter=text yarn test",
-    "test:coverage:html": "npx nyc@latest --reporter=html yarn test"
+    "test:coverage:html": "npx nyc@latest --reporter=html yarn test && open ./coverage/index.html"
   },
   "dependencies": {
     "chai": "^4.2.0",

@@ -24,8 +24,8 @@ describe("al inciar la partida", () => {
     const partida = iniciar(presenter)
     
     mostrarCartaInicial.primero("espada.1")
-    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5"])
-    mostrarMano.segundo(JUGADOR_DOS, ["copa.1", "copa.2", "copa.3", "copa.4", "copa.5"])
+    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "tomar"])
+    mostrarMano.segundo(JUGADOR_DOS, ["copa.1", "copa.2", "copa.3", "copa.4", "copa.5", "tomar"])
     esperarPorJugada.primero(JUGADOR_UNO, partida)
   })
 })
@@ -78,8 +78,22 @@ describe("durante el turno de cada jugador", () => {
 
     partida.tomarCarta(JUGADOR_UNO)
     
-    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"])
+    mostrarMano.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6", "pasar"])
     esperarPorJugada.primero(JUGADOR_UNO, partida)
+  })
+})
+
+describe("durante el turno de cada jugador si este levanta una carta", () => {
+  it("puede pasar el turno", () => {
+    const presenter = new PresenterJodete()
+    const partida = iniciar(presenter)
+    partida.tomarCarta(JUGADOR_UNO)
+    
+    const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
+    
+    partida.pasarTurno(JUGADOR_UNO)
+    
+    esperarPorJugada.primero(JUGADOR_DOS, partida)
   })
 })
 

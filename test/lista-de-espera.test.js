@@ -11,7 +11,7 @@
 const expect = require("chai").expect;
 const crearLista = require("../lista/crearLista")
 
-it.only("quiero saber las plazas disponibles", function() {
+it.skip("quiero saber las plazas disponibles", function() {
 
   //arrange
   const limite = 250
