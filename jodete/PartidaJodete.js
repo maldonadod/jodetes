@@ -2,36 +2,28 @@ const Baraja = require("./Baraja")
 const CartasEnJuego = require("./CartasEnJuego")
 
 class PartidaJodete {
-  constructor(presenter, baraja) {
+  constructor(presenter, baraja, cantidadDeCartasBarajadasAlInicial = 5) {
     this.presenter = presenter
     this.manos = {}
     this.baraja = baraja
+    this.cantidadDeCartasBarajadasAlInicial = cantidadDeCartasBarajadasAlInicial
   }
   iniciar(jugadorUno, jugadorDos) {
     this.jugadorUno = jugadorUno
     this.jugadorDos = jugadorDos
 
-    const siguienteCartaEnLaBaraja = () => this.baraja.robarUnaCarta()
+    this.manos[jugadorUno] = this.baraja.robarCartas(this.cantidadDeCartasBarajadasAlInicial)
+    this.manos[jugadorDos] = this.baraja.robarCartas(this.cantidadDeCartasBarajadasAlInicial)
 
-    this.manos[jugadorUno] = [
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-    ]
-    this.manos[jugadorDos] = [
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-      siguienteCartaEnLaBaraja(),
-    ]
-    this.cartasJugadas = new CartasEnJuego(siguienteCartaEnLaBaraja())
+    this.cartasJugadas = new CartasEnJuego(this.baraja.robarUnaCarta())
     this.presenter.mostrarCartaInicial(this.cartasJugadas.ultima())
     this.presenter.esperarPorJugada(jugadorUno, [...this.manos[jugadorUno], "tomar"], this)
   }
   bajarCarta(jugador, cartaADescartar) {
+
+    const siguienteJugador = jugador === this.jugadorUno
+      ? this.jugadorDos
+      : this.jugadorUno
 
     let manoDelJugador = this.manos[jugador]
     const ultimaCartaJugada = this.cartasJugadas.ultima()
@@ -41,14 +33,17 @@ class PartidaJodete {
       this.manos[jugador] = descartarCarta(manoDelJugador, cartaADescartar)
       this.cartasJugadas.apilar(cartaADescartar)
       this.presenter.mostrarDescarte(jugador, this.manos[jugador], this.cartasJugadas.ultima())
+
+      if (this.manos[jugador].length === 0) {
+        return this.presenter.mostrarResultado({
+          ganador: jugador,
+          perdedor: siguienteJugador
+        })
+      }
     } else {
       this.manos[jugador] = tomarCarta(manoDelJugador, this.baraja)
       this.presenter.mostrarDescarteInvalido(jugador, this.manos[jugador], cartaADescartar)
     }
-
-    const siguienteJugador = jugador === this.jugadorUno
-      ? this.jugadorDos
-      : this.jugadorUno
 
     this.presenter.esperarPorJugada(siguienteJugador, [...this.manos[siguienteJugador], "tomar"], this)
   }

@@ -7,6 +7,8 @@ class PresenterJodete {
   }
   mostrarDescarteInvalido(jugador, mano, carta) {
   }
+  mostrarResultado({ ganador, perdedor }) {
+  }
 }
 
 module.exports = PresenterJodete;

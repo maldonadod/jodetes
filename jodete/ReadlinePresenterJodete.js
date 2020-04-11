@@ -31,6 +31,10 @@ class PresenterJodete {
     this.manos[jugador] = mano
     console.log(jugador + " descartó invalidamente: ", carta, " debe levantar una carta...")
   }
+  mostrarResultado({ ganador, perdedor }) {
+    this.rl.write(`Gano: ${ganador}, perdio: ${perdedor}`)
+    this.rl.close()
+  }
 }
 
 module.exports = PresenterJodete;

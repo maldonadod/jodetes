@@ -7,14 +7,13 @@ const sinon = require("sinon");
 const JUGADOR_UNO = "pepe"
 const JUGADOR_DOS = "juan"
 
-function iniciar(presenter) {
-  const partida = new PartidaJodete(presenter, new Baraja())
+function iniciar(presenter, cantidadDeCartasBarajadasAlInicial) {
+  const partida = new PartidaJodete(presenter, new Baraja(), cantidadDeCartasBarajadasAlInicial)
   partida.iniciar(JUGADOR_UNO, JUGADOR_DOS)
   return partida
 }
 
 describe("al inciar la partida", () => {
-
   it("cada jugador reciben 5 cartas y revelamos una carta en la mesa", () => {
     const presenter = new PresenterJodete()
     const mostrarCartaInicial = dadaLaInteraccion(presenter, "mostrarCartaInicial")
@@ -115,6 +114,24 @@ describe("durante el turno de cada jugador si este levanta una carta", () => {
     ]
 
     esperarPorJugada.primero(JUGADOR_DOS, jugadas, partida)
+  })
+})
+
+describe("cuando un jugador se queda sin cartas en la mano", () => {
+  it("gana la partida y esta se termina", () => {
+    const cantidadDeCartasBarajadasAlInicial = 1
+    const presenter = new PresenterJodete()
+    
+    const mostrarResultado = dadaLaInteraccion(presenter, "mostrarResultado")
+    
+    const partida = iniciar(presenter, cantidadDeCartasBarajadasAlInicial)
+
+    partida.bajarCarta(JUGADOR_UNO, "oro.1")
+    
+    mostrarResultado.primero({
+      ganador: JUGADOR_UNO,
+      perdedor: JUGADOR_DOS,
+    })
   })
 })
 

@@ -10,6 +10,13 @@ class Baraja {
   robarUnaCarta() {
     return this.cartas.shift()
   }
+  robarCartas(cantidadAtomar) {
+    let cartas = []
+    for (let index = 0; index < cantidadAtomar; index++) {
+      cartas = [...cartas, this.robarUnaCarta()]
+    }
+    return cartas
+  }
 }
 
 module.exports = Baraja;
