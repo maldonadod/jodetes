@@ -12,7 +12,7 @@ class PresenterJodete {
   mostrarCartaInicial(carta) {
     console.log("Iniciamos la partida con la carta:", carta)
   }
-  mostrarDescarte(jugador, mano, carta) {
+  mostrarDescarte(jugador, carta) {
     console.log(jugador + " descartó: ", carta)
   }
   esperarPorJugada(jugador, jugadas, partida) {
@@ -27,12 +27,11 @@ class PresenterJodete {
       }
     })
   }
-  mostrarDescarteInvalido(jugador, mano, carta) {
-    this.manos[jugador] = mano
+  mostrarDescarteInvalido(jugador, carta) {
     console.log(jugador + " descartó invalidamente: ", carta, " debe levantar una carta...")
   }
   mostrarResultado({ ganador, perdedor }) {
-    this.rl.write(`Gano: ${ganador}, perdio: ${perdedor}`)
+    console.log(`Gano: ${ganador}, perdio: ${perdedor}`)
     this.rl.close()
   }
 }

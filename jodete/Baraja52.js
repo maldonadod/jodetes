@@ -1,5 +1,8 @@
-class Baraja {
+const Baraja = require("./Baraja")
+
+class Baraja52 extends Baraja {
   constructor() {
+    super();
     this.cartas = shuffle([
       "oro.1", "oro.2", "oro.3", "oro.4", "oro.5",
       "oro.6", "oro.7", "oro.8", "oro.9", "oro.10",
@@ -15,9 +18,6 @@ class Baraja {
       "basto.11", "basto.12",
     ])
   }
-  robarUnaCarta() {
-    return this.cartas.shift()
-  }
 }
 
 function shuffle(a) {
@@ -31,4 +31,4 @@ function shuffle(a) {
   return a;
 }
 
-module.exports = Baraja;
+module.exports = Baraja52;

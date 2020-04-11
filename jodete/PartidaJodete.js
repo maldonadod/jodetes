@@ -21,18 +21,16 @@ class PartidaJodete {
   }
   bajarCarta(jugador, cartaADescartar) {
 
+    const manoDelJugador = this.manos[jugador]
     const siguienteJugador = jugador === this.jugadorUno
       ? this.jugadorDos
       : this.jugadorUno
+    
+    const cartaApilada = this.cartasJugadas.apilar(cartaADescartar)
 
-    let manoDelJugador = this.manos[jugador]
-    const ultimaCartaJugada = this.cartasJugadas.ultima()
-    const esDescarteValido = validarDescarte(cartaADescartar, ultimaCartaJugada)
-
-    if (esDescarteValido) {
+    if (cartaApilada === cartaADescartar) {
       this.manos[jugador] = descartarCarta(manoDelJugador, cartaADescartar)
-      this.cartasJugadas.apilar(cartaADescartar)
-      this.presenter.mostrarDescarte(jugador, this.manos[jugador], this.cartasJugadas.ultima())
+      this.presenter.mostrarDescarte(jugador, this.cartasJugadas.ultima())
 
       if (this.manos[jugador].length === 0) {
         return this.presenter.mostrarResultado({
@@ -42,7 +40,7 @@ class PartidaJodete {
       }
     } else {
       this.manos[jugador] = tomarCarta(manoDelJugador, this.baraja)
-      this.presenter.mostrarDescarteInvalido(jugador, this.manos[jugador], cartaADescartar)
+      this.presenter.mostrarDescarteInvalido(jugador, cartaADescartar)
     }
 
     this.presenter.esperarPorJugada(siguienteJugador, [...this.manos[siguienteJugador], "tomar"], this)
@@ -65,11 +63,6 @@ function descartarCarta(mano, carta) {
 }
 function tomarCarta(mano, baraja) {
   return [...mano, baraja.robarUnaCarta()]
-}
-function validarDescarte(cartaADescartar, ultimaCartaJugada) {
-  const [palo1, numero1] = cartaADescartar.split(".")
-  const [palo2, numero2] = ultimaCartaJugada.split(".")
-  return palo1 === palo2 || numero1 === numero2
 }
 
 module.exports = PartidaJodete;

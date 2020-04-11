@@ -8,9 +8,17 @@ class CartasEnJuego {
   ultima() {
     return this.cartasJugadas[this.cartasJugadas.length - 1]
   }
-  apilar(carta) {
-    return this.cartasJugadas.push(carta)
+  apilar(cartaADescartar) {
+    if (esMismoPaloOMismoNumero(cartaADescartar, this.ultima())) {
+      this.cartasJugadas.push(cartaADescartar)
+      return cartaADescartar
+    }
   }
+}
+function esMismoPaloOMismoNumero(cartaADescartar, ultimaCartaApilada) {
+  const [palo1, numero1] = cartaADescartar.split(".")
+  const [palo2, numero2] = ultimaCartaApilada.split(".")
+  return palo1 === palo2 || numero1 === numero2
 }
 
 module.exports = CartasEnJuego;

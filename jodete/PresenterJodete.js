@@ -3,9 +3,9 @@ class PresenterJodete {
   }
   esperarPorJugada(jugador, jugadas, partida) {
   }
-  mostrarDescarte(jugador, mano, carta) {
+  mostrarDescarte(jugador, carta) {
   }
-  mostrarDescarteInvalido(jugador, mano, carta) {
+  mostrarDescarteInvalido(jugador, carta) {
   }
   mostrarResultado({ ganador, perdedor }) {
   }

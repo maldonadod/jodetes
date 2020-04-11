@@ -34,7 +34,7 @@ describe("cuando el jugador descarta carta valida", () => {
 
     partida.bajarCarta(JUGADOR_UNO, "oro.1")
 
-    mostrarDescarte.primero(JUGADOR_UNO, ["oro.2", "oro.3", "oro.4", "oro.5"], "oro.1")
+    mostrarDescarte.primero(JUGADOR_UNO, "oro.1")
   })
 })
 
@@ -77,7 +77,7 @@ describe("cuando el jugador intenta descartar una carta invalida", () => {
       "tomar",
     ]
 
-    mostrarDescarteInvalido.primero(JUGADOR_UNO, ["oro.1", "oro.2", "oro.3", "oro.4", "oro.5", "oro.6"], "oro.2")
+    mostrarDescarteInvalido.primero(JUGADOR_UNO, "oro.2")
     esperarPorJugada.primero(JUGADOR_DOS, jugadas, partida)
   })
 })
@@ -103,8 +103,9 @@ describe("durante el turno de cada jugador si este levanta una carta", () => {
     const esperarPorJugada = dadaLaInteraccion(presenter, "esperarPorJugada")
     
     partida.pasarTurno(JUGADOR_UNO)
+    partida.pasarTurno(JUGADOR_DOS)
     
-    const jugadas = [
+    const jugadasDelJugadorDos = [
       "copa.1",
       "copa.2",
       "copa.3",
@@ -112,8 +113,18 @@ describe("durante el turno de cada jugador si este levanta una carta", () => {
       "copa.5",
       "tomar",
     ]
+    const jugadasDelJugadorUno = [
+      "oro.1",
+      "oro.2",
+      "oro.3",
+      "oro.4",
+      "oro.5",
+      "oro.6",
+      "tomar",
+    ]
 
-    esperarPorJugada.primero(JUGADOR_DOS, jugadas, partida)
+    esperarPorJugada.primero(JUGADOR_DOS, jugadasDelJugadorDos, partida)
+    esperarPorJugada.segundo(JUGADOR_UNO, jugadasDelJugadorUno, partida)
   })
 })
 
