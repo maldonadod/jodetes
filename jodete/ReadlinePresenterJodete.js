@@ -1,38 +1,61 @@
-const readline = require("readline")
+const inquirer = require("inquirer")
 
 class PresenterJodete {
 
   constructor() {
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    })
     console.clear()
+    this.jugadas = {
+      lineas: [],
+      add(jugada) {
+        this.lineas.push(jugada)
+        console.clear()
+        this.lineas.forEach(linea => {
+          console.log(linea)
+        })
+      },
+      imprimirLineas() {
+        console.clear()
+        this.lineas.forEach(linea => {
+          console.log(linea)
+        })
+      }
+    }
   }
   mostrarCartaInicial(carta) {
-    console.log("Iniciamos la partida con la carta:", carta)
+    this.jugadas.add(`Iniciamos la partida con la carta: ${carta}`)
   }
   mostrarDescarte(jugador, carta) {
-    console.log(jugador + " descartó: ", carta)
+    this.jugadas.add(`${jugador} descartó ${carta}`)
   }
   esperarPorJugada(jugador, jugadas, partida) {
-    const jugadasDisponibles = jugadas.join(", ")
-    this.rl.question(`${jugador}: ${jugadasDisponibles} >> `, carta => {
-      if (carta === "tomar") {
-        partida.tomarCarta(jugador)
-      } else if (carta === "pasar") {
-        partida.pasarTurno(jugador)
-      } else {
-        partida.bajarCarta(jugador, carta)
-      }
-    })
+    inquirer
+      .prompt([{
+        prefix: "",
+        type: "list",
+        name: "jugada",
+        pageSize: 20,
+        message: `Turno ${jugador}:`,
+        choices: jugadas,
+        default: jugadas.includes("tomar") ? "tomar" : "pasar"
+      }])
+      .then(({ jugada }) => {
+        this.jugadas.imprimirLineas()
+    
+        if (jugada === "tomar") {
+          partida.tomarCarta(jugador)
+        } else if (jugada === "pasar") {
+          partida.pasarTurno(jugador)
+        } else {
+          partida.bajarCarta(jugador, jugada)
+        }
+      });
   }
   mostrarDescarteInvalido(jugador, carta) {
-    console.log(jugador + " descartó invalidamente: ", carta, " debe levantar una carta...")
+    this.jugadas.imprimirLineas()
+    console.log(`${jugador}, solo puedes descartar cartas del mismo número o mismo palo que la última carta descartada.`)
   }
   mostrarResultado({ ganador, perdedor }) {
     console.log(`Gano: ${ganador}, perdio: ${perdedor}`)
-    this.rl.close()
   }
 }
 
