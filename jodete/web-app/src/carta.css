@@ -1,0 +1,37 @@
+.carta {
+  height: 200px;
+  width: 120px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+.carta .indice {
+  padding: 5px;
+}
+.basto {
+  background-image: url(./basto.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.copa {
+  background-image: url(./copa.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.espada {
+  background-image: url(./espada.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.oro {
+  background-image: url(./oro.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.mano-del-jugador {
+  display: flex;
+  justify-content: space-between;
+}

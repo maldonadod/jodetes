@@ -1,6 +1,6 @@
-const PartidaJodete = require("./PartidaJodete");
-const ReadlinePresenterJodete = require("./ReadlinePresenterJodete");
-const Baraja52 = require("./Baraja52");
+const PartidaJodete = require("../PartidaJodete");
+const ReadlinePresenterJodete = require("../ReadlinePresenterJodete");
+const Baraja52 = require("../Baraja52");
 
 const JUGADOR_UNO = "pepe"
 const JUGADOR_DOS = "juan"
