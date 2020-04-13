@@ -7,7 +7,7 @@ function Turno(props) {
   return (
     <div className="turno-del-jugador">
       <div>Turno de {jugador}, elija:</div>
-      
+
       <div className="mano-del-jugador">
         {jugadas.map(jugada => {
           return (

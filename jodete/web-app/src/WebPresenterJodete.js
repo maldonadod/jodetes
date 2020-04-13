@@ -16,6 +16,9 @@ class WebPresenterJodete {
     this.ultimaCartaDescartada = carta
   }
   esperarPorJugada(jugador, jugadas, partida) {
+    const jugadasFueraDeLasCartas = ["tomar", "pasar"]
+    const puedeTomar = jugadas.includes("tomar")
+
     function onJugada(jugada) {
       if (jugada === "tomar") {
         partida.tomarCarta(jugador)
@@ -31,9 +34,12 @@ class WebPresenterJodete {
           carta={this.ultimaCartaDescartada}
           onJugada={onJugada}
         />
+        <PuedeTomar puedeTomar={puedeTomar} onClick={() => onJugada("tomar")} />
         <Turno
           jugador={jugador}
-          jugadas={jugadas}
+          puedeTomar={puedeTomar}
+          onJugada={onJugada}
+          jugadas={jugadas.filter(j => !jugadasFueraDeLasCartas.includes(j))}
         />
       </Mesa>
     )
@@ -46,6 +52,15 @@ class WebPresenterJodete {
   mostrarResultado({ ganador, perdedor }) {
     render(`Ganó ${ganador}, ${perdedor} seguí participando.`)
   }
+}
+
+function PuedeTomar({ puedeTomar, onClick }) {
+
+  return puedeTomar && (
+    <div onClick={onClick}>
+      Pickear carta
+    </div>
+  )
 }
 
 export default WebPresenterJodete;
