@@ -1,5 +1,5 @@
 const expect = require("chai").expect
-const Baraja = require("../jodete/Baraja")
+const Baraja = require("../jodete/domain/Baraja")
 
 describe("Baraja", () => {
   it("debe devolver una carta cuando se roba", () => {

@@ -1,6 +1,6 @@
-const PartidaJodete = require("../jodete/PartidaJodete");
-const PresenterJodete = require("../jodete/PresenterJodete");
-const Baraja = require("../jodete/Baraja");
+const PartidaJodete = require("../jodete/domain/PartidaJodete");
+const PresenterJodete = require("../jodete/domain/PresenterJodete");
+const Baraja = require("../jodete/domain/Baraja");
 const expect = require("chai").expect;
 const sinon = require("sinon");
 
