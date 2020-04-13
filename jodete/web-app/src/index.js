@@ -1,9 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from "react"
+import ReactDOM from "react-dom"
 import PartidaJodete from "./domain/PartidaJodete"
 import Baraja52 from "./domain/Baraja52"
-import "./carta.css"
-import "./cartas-jugadas.css"
+import Mesa from "./Mesa"
+import CartasJugadas from "./CartasJugadas"
+import Turno from "./Turno"
+import "./index.css"
 
 const JUGADOR_UNO = "pepe"
 const JUGADOR_DOS = "juan"
@@ -20,20 +22,26 @@ class WebPresenterJodete {
     this.ultimaCartaDescartada = carta
   }
   esperarPorJugada(jugador, jugadas, partida) {
-
+    function onJugada(jugada) {
+      if (jugada === "tomar") {
+        partida.tomarCarta(jugador)
+      } else if (jugada === "pasar") {
+        partida.pasarTurno(jugador)
+      } else {
+        partida.bajarCarta(jugador, jugada)
+      }
+    }
     render(
-      <div>
-        <CartasJugadas carta={this.ultimaCartaDescartada} />
-        <Turno jugador={jugador} jugadas={jugadas} onJugada={jugada => {
-          if (jugada === "tomar") {
-            partida.tomarCarta(jugador)
-          } else if (jugada === "pasar") {
-            partida.pasarTurno(jugador)
-          } else {
-            partida.bajarCarta(jugador, jugada)
-          }
-        }} />
-      </div>
+      <Mesa>
+        <CartasJugadas
+          carta={this.ultimaCartaDescartada}
+          onJugada={onJugada}
+        />
+        <Turno
+          jugador={jugador}
+          jugadas={jugadas}
+        />
+      </Mesa>
     )
   }
   mostrarDescarte(jugador, carta) {
@@ -42,42 +50,8 @@ class WebPresenterJodete {
   mostrarDescarteInvalido(jugador, carta) {
   }
   mostrarResultado({ ganador, perdedor }) {
+    render(`Ganó ${ganador}, ${perdedor} seguí participando.`)
   }
-}
-
-function CartasJugadas(props) {
-  const { carta } = props
-  return (
-    <div className="cartas-jugadas">
-      <Carta carta={carta} />
-    </div>
-  )
-}
-
-function Carta({ carta, onClick = () => {} }) {
-  const [palo, indice] = carta.split(".")
-  return (
-    <div onClick={onClick} className={"carta " + palo} key={carta}>
-      <div className="indice">{indice}</div>
-    </div>
-  )
-}
-
-function Turno(props) {
-  const { jugador, jugadas, onJugada } = props
-  return (
-    <>
-      <div>Turno de {jugador}, elija:</div>
-      
-      <div className="mano-del-jugador">
-        {jugadas.map(jugada => {
-          return (
-            <Carta key={jugada} onClick={() => onJugada(jugada)} carta={jugada} />
-          )
-        })}
-      </div>
-    </>
-  )
 }
 
 const presenter = new WebPresenterJodete()
