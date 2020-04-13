@@ -11,15 +11,39 @@
 const expect = require("chai").expect;
 const crearLista = require("../lista/crearLista")
 
-it.only("quiero saber las plazas disponibles", function() {
+describe(";)", function() {
+  it.only("quiero saber las plazas disponibles", function() {
 
-  //arrange
-  const limite = 250
-  const lista = crearLista(limite)
+    //arrange
+    const limite = 250
+    const lista = crearLista(limite)
+  
+    //act, exercise
+    const plazasDisponibles = lista.obtenerPlazasDisponibles();
+  
+    //assert
+    expect(plazasDisponibles).to.equal(250);
+  })
+})
 
-  //act, exercise
-  const plazasDisponibles = lista.obtenerPlazasDisponibles();
+describe.only("valentin se quiere inscribir a la lista", function() {
+  it("al haber plazas disponibles, este se confirma", function() {
 
-  //assert
-  expect(plazasDisponibles).to.equal(250);
+    //inicializar objetos
+    let presentadorFueLlamadoParaConfirmarInscripcion = false
+    const limite = 10
+    const presentador = {
+      inscripcionConfirmada(persona) {
+        presentadorFueLlamadoParaConfirmarInscripcion = true
+      }
+    }
+    const lista = crearLista(limite, presentador)
+    const valentin = "valentin"
+  
+    //ejecucion
+    lista.inscribirPersona(valentin)
+  
+    //verificacion
+    expect(presentadorFueLlamadoParaConfirmarInscripcion).to.eql(true)
+  })
 })
